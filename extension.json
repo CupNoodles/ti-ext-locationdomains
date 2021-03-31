@@ -1,0 +1,20 @@
+{
+    "code": "cupnoodles.locationdomains",
+    "name": "Location Domains",
+    "description": "Allow use of domains per-location.",
+    "version": "v1.0.0",
+    "author": "CupNoodles",
+    "icon": {
+      "class": "fa fa-folder-plus",
+      "backgroundColor": "#1B294B",
+      "color": "#fff"
+    },
+    "homepage": "",
+    "require": {
+      "igniter.cart" : "*",
+      "igniter.coupons": "*",
+      "igniter.local": "*",
+      "igniter.user": "*",
+      "igniter.payregister": "*"
+    }
+  }
