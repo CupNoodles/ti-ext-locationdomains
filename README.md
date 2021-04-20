@@ -26,4 +26,22 @@ Expand this line with further domains or subdomains, like
 server_name _ <your_domain1> <subdomain.your_domain1> <your_domain2>; 
 ````
 
+Furthermore, assets won't load until you allow CORS from your various domains. Add CORS for subdomains with something like 
+
+```
+map $http_origin $allow_origin {
+    ~^https?://(.*\.)?my-domain.com(:\d+)?$ $http_origin;
+    ~^https?://(.*\.)?localhost(:\d+)?$ $http_origin;
+    default "";
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+    add_header 'Access-Control-Allow-Origin' $allow_origin;
+    # ...
+}
+
+```
+
 Don't forget to update your SSL certificates to validate other domain names as well!

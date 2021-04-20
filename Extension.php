@@ -71,12 +71,30 @@ class Extension extends BaseExtension
         Event::listen('router.beforeRoute', function ($url, $router) {
             if(app('location')->getModel()->use_alternate_domain){
                 app('url')->forceRootUrl(app('location')->getModel()->alternate_domain);
-            }
-
-            
+            } 
             //echo app('location')->getId(); die();
             
         });
+
+        Event::listen('main.page.init',function ($page) {
+
+            if (!$locationCurrent = app('location')->current()){
+                return;
+            }
+
+            $location_by_url = Locations_model::where('use_alternate_domain', 1)->where('alternate_domain', (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://'.  $_SERVER['HTTP_HOST'])->first();
+            app('location')->setCurrent($location_by_url);
+
+            if(isset($_GET['order_type'])){
+                if($_GET['order_type'] == 'pickup'){
+                    app('location')->updateOrderType('collection');
+                }
+                if($_GET['order_type'] == 'delivery'){
+                    app('location')->updateOrderType('delivery');
+                }
+            }
+        });
+
 
         //echo app('location'); 
     }
