@@ -83,7 +83,9 @@ class Extension extends BaseExtension
             }
 
             $location_by_url = Locations_model::where('use_alternate_domain', 1)->where('alternate_domain', (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://'.  $_SERVER['HTTP_HOST'])->first();
-            app('location')->setCurrent($location_by_url);
+            if(is_object($location_by_url) && get_class($location_by_url) == 'Admin\Models\Locations_model'){
+                app('location')->setCurrent($location_by_url);
+            }
 
             if(isset($_GET['order_type'])){
                 if($_GET['order_type'] == 'pickup'){
