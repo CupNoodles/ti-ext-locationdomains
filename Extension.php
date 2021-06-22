@@ -69,12 +69,19 @@ class Extension extends BaseExtension
 
         // frontend
         Event::listen('router.beforeRoute', function ($url, $router) {
-            if(app('location')->getModel()->use_alternate_domain){
+            
+            if(
+                (
+                    strpos($url, 'menus') !== false 
+                    ||
+                    strpos($url, 'checkout') !== false 
+                )
+                && app('location')->getModel()->use_alternate_domain){
                 app('url')->forceRootUrl(app('location')->getModel()->alternate_domain);
             } 
-            //echo app('location')->getId(); die();
             
         });
+
 
         Event::listen('main.page.init',function ($page) {
 
@@ -87,18 +94,9 @@ class Extension extends BaseExtension
                 app('location')->setCurrent($location_by_url);
             }
 
-            if(isset($_GET['order_type'])){
-                if($_GET['order_type'] == 'pickup'){
-                    app('location')->updateOrderType('collection');
-                }
-                if($_GET['order_type'] == 'delivery'){
-                    app('location')->updateOrderType('delivery');
-                }
-            }
+
         });
 
-
-        //echo app('location'); 
     }
 
     public function register()
