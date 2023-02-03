@@ -7,7 +7,7 @@ use Event;
 use Config;
 use Admin\Widgets\Form;
 use Admin\Models\Locations_model;
-
+use Illuminate\Http\Request;
 use Igniter\Local\Classes\Location;
 
 class Extension extends BaseExtension
@@ -88,6 +88,14 @@ class Extension extends BaseExtension
             $location_by_url = Locations_model::where('use_alternate_domain', 1)->where('alternate_domain', (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://'.  $_SERVER['HTTP_HOST'])->first();
             if(is_object($location_by_url) && get_class($location_by_url) == 'Admin\Models\Locations_model'){
                 app('location')->setCurrent($location_by_url);
+            }
+            else{
+                $location_permalink = explode('/', url()->current());
+                $location_permalink = $location_permalink[3];
+                $location_by_uri = Locations_model::where('permalink_slug', $location_permalink)->first();
+                if(is_object($location_by_uri) && get_class($location_by_uri) == 'Admin\Models\Locations_model'){
+                    app('location')->setCurrent($location_by_uri);
+                }
             }
 
 
