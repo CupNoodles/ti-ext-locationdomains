@@ -85,10 +85,6 @@ class Extension extends BaseExtension
 
         Event::listen('main.page.init',function ($page) {
 
-            if (!$locationCurrent = app('location')->current()){
-                return;
-            }
-
             $location_by_url = Locations_model::where('use_alternate_domain', 1)->where('alternate_domain', (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://'.  $_SERVER['HTTP_HOST'])->first();
             if(is_object($location_by_url) && get_class($location_by_url) == 'Admin\Models\Locations_model'){
                 app('location')->setCurrent($location_by_url);
