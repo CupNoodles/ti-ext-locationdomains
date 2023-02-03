@@ -91,10 +91,12 @@ class Extension extends BaseExtension
             }
             else{
                 $location_permalink = explode('/', url()->current());
-                $location_permalink = $location_permalink[3];
-                $location_by_uri = Locations_model::where('permalink_slug', $location_permalink)->first();
-                if(is_object($location_by_uri) && get_class($location_by_uri) == 'Admin\Models\Locations_model'){
-                    app('location')->setCurrent($location_by_uri);
+                if(count($location_permalink) > 3){
+                    $location_permalink = $location_permalink[3];
+                    $location_by_uri = Locations_model::where('permalink_slug', $location_permalink)->first();
+                    if(is_object($location_by_uri) && get_class($location_by_uri) == 'Admin\Models\Locations_model'){
+                        app('location')->setCurrent($location_by_uri);
+                    }
                 }
             }
 
